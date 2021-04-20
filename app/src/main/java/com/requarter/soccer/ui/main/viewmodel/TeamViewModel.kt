@@ -1,9 +1,9 @@
 package com.requarter.soccer.ui.main.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.requarter.soccer.data.model.Fixture
 import com.requarter.soccer.data.model.Team
 import com.requarter.soccer.data.repository.MainRepository
 import com.requarter.soccer.utils.Resource
@@ -41,8 +41,35 @@ class TeamViewModel(private val mainRepository: MainRepository): ViewModel() {
     fun getUsers(): LiveData<Resource<List<Team>>> {
         return teams
     }
-    private val myTeams = ArrayList<Team>()
-    fun createPreviousFixture() {
-        teams.value?.data?.forEach { it -> Log.e("team1",it.toString()) }
+
+    private fun prepareTeamList(): List<Team> {
+        val teamList: List<Team>? = teams.value?.data?.shuffled()
+        if (teams.value?.data!!.size%2 == 1)
+        {
+            teamList?.drop(1)
+        }
+        return teamList!!
+    }
+
+    fun createPreviousFixture(): ArrayList<Fixture> {
+        val teamList: List<Team>? = prepareTeamList()
+        val fixtureList: ArrayList<Fixture> = arrayListOf()
+        for (i in teamList?.indices!! step 2)
+        {
+            val fixtureObject = Fixture(teamList[i]?.name.toString(),teamList[i+1]?.name.toString(),1,3)
+            fixtureList.add(fixtureObject)
+        }
+        return fixtureList
+    }
+
+    fun createNextFixture(): ArrayList<Fixture> {
+        val teamList: List<Team>? = prepareTeamList()
+        val fixtureList: ArrayList<Fixture> = arrayListOf()
+        for (i in teamList?.indices!! step 2)
+        {
+            val fixtureObject = Fixture(teamList[i]?.name.toString(),teamList[i+1]?.name.toString(),null,null)
+            fixtureList.add(fixtureObject)
+        }
+        return fixtureList
     }
 }

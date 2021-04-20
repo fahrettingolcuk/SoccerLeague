@@ -8,16 +8,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.requarter.soccer.R
 import com.requarter.soccer.data.api.ApiHelper
 import com.requarter.soccer.data.api.ApiServiceImpl
-import com.requarter.soccer.data.model.Team
+import com.requarter.soccer.data.model.Fixture
 import com.requarter.soccer.ui.base.ViewModelFactory
+import com.requarter.soccer.ui.main.adapter.MainAdapter
+import com.requarter.soccer.ui.main.adapter.PreviousFixtureAdapter
 import com.requarter.soccer.ui.main.viewmodel.TeamViewModel
 import com.requarter.soccer.utils.Status
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_previous_fixture.*
 
 class PreviousFixtureFragment : Fragment() {
+    private lateinit var adapter: PreviousFixtureAdapter
     private lateinit var teamViewModel: TeamViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,31 +39,40 @@ class PreviousFixtureFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        previous_fragment_name.text = "Previous Fixture"
         teamViewModel = ViewModelProviders.of(
             this,
             ViewModelFactory(ApiHelper(ApiServiceImpl()))
         ).get(TeamViewModel::class.java)
+        setupUI(view)
         setupObserver()
+    }
+
+    private fun setupUI(view: View) {
+        recyclerViewPrevious.layoutManager = LinearLayoutManager(view.context)
+        adapter = PreviousFixtureAdapter(arrayListOf())
+        recyclerViewPrevious.addItemDecoration(
+                DividerItemDecoration(
+                        recyclerViewPrevious.context,
+                        (recyclerViewPrevious.layoutManager as LinearLayoutManager).orientation
+                )
+        )
+        recyclerViewPrevious.adapter = adapter
     }
 
     private fun setupObserver() {
         teamViewModel.getUsers().observe(this, Observer {
             when (it.status) {
                 Status.SUCCESS-> {
-                    progressBar.visibility = View.GONE
-                    it.data?.let { users -> renderList(users) }
-                }
-                Status.ERROR -> {
-                    //Handle Error
-                    progressBar.visibility = View.GONE
+                    it.data?.let {  renderList() }
+                    recyclerViewPrevious.visibility = View.VISIBLE
                 }
             }
         })
     }
 
-    private fun renderList(teams: List<Team>) {
-        Log.e("123teams",teams.toString())
-        teamViewModel.createPreviousFixture()
+    private fun renderList() {
+       val fixtureList: ArrayList<Fixture> =  teamViewModel.createPreviousFixture()
+        adapter.addData(fixtureList)
+        adapter.notifyDataSetChanged()
     }
 }

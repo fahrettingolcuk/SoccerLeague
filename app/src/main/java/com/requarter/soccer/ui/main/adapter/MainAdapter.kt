@@ -1,5 +1,6 @@
 package com.requarter.soccer.ui.main.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ class MainAdapter(
 
     class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(team: Team) {
+            Log.e("team00",team.toString())
             itemView.textViewUserName.text = team.name
         }
     }
