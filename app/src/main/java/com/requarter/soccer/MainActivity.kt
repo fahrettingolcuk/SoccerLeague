@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -16,6 +18,7 @@ import com.requarter.soccer.data.model.Team
 import com.requarter.soccer.ui.base.ViewModelFactory
 import com.requarter.soccer.ui.main.adapter.MainAdapter
 import com.requarter.soccer.ui.main.viewmodel.TeamViewModel
+import com.requarter.soccer.utils.LocalStorages
 import com.requarter.soccer.utils.Status
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -33,6 +36,9 @@ class MainActivity : AppCompatActivity() {
         drawFixtureBtn.setOnClickListener {
             val intent = Intent(this,FixtureActivity::class.java)
             startActivity(intent)
+        }
+        btnChangeTheme.setOnClickListener {
+            chooseTheme()
         }
     }
 
@@ -79,5 +85,32 @@ class MainActivity : AppCompatActivity() {
             this,
             ViewModelFactory(ApiHelper(ApiServiceImpl()))
         ).get(TeamViewModel::class.java)
+    }
+
+    private fun chooseTheme() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(getString(R.string.theme_choose_text))
+        val styles = arrayOf("Light","Dark")
+        val checkedItem = LocalStorages(this).darkTheme
+        builder.setSingleChoiceItems(styles, checkedItem) { dialog, which ->
+            when (which) {
+                0 -> {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                    delegate.applyDayNight()
+                    LocalStorages(this).darkTheme = 0
+                    dialog.dismiss()
+                }
+                1 -> {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                    delegate.applyDayNight()
+                    LocalStorages(this).darkTheme = 1
+                    dialog.dismiss()
+                }
+            }
+
+        }
+
+        val dialog = builder.create()
+        dialog.show()
     }
 }
