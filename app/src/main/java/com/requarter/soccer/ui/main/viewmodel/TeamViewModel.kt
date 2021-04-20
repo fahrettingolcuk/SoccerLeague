@@ -10,6 +10,7 @@ import com.requarter.soccer.utils.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import kotlin.random.Random
 
 class TeamViewModel(private val mainRepository: MainRepository): ViewModel() {
     private val teams = MutableLiveData<Resource<List<Team>>>()
@@ -43,10 +44,10 @@ class TeamViewModel(private val mainRepository: MainRepository): ViewModel() {
     }
 
     private fun prepareTeamList(): List<Team> {
-        val teamList: List<Team>? = teams.value?.data?.shuffled()
-        if (teams.value?.data!!.size%2 == 1)
+        var teamList: List<Team>? = teams.value?.data?.shuffled()
+        if (teams.value?.data!!.size % 2 == 1)
         {
-            teamList?.drop(1)
+            teamList = teamList?.drop(1)
         }
         return teamList!!
     }
@@ -56,7 +57,8 @@ class TeamViewModel(private val mainRepository: MainRepository): ViewModel() {
         val fixtureList: ArrayList<Fixture> = arrayListOf()
         for (i in teamList?.indices!! step 2)
         {
-            val fixtureObject = Fixture(teamList[i]?.name.toString(),teamList[i+1]?.name.toString(),1,3)
+            val fixtureObject = Fixture(teamList[i]?.name.toString(),teamList[i+1]?.name.toString(),
+                Random.nextInt(0,10),Random.nextInt(0,10))
             fixtureList.add(fixtureObject)
         }
         return fixtureList
