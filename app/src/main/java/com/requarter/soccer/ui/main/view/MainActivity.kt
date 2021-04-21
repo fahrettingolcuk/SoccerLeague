@@ -56,11 +56,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupObserver() {
-        teamViewModel.getUsers().observe(this, Observer {
+        teamViewModel.getTeams().observe(this, Observer {
             when (it.status) {
                 Status.SUCCESS-> {
                     progressBar.visibility = View.GONE
-                    it.data?.let { users -> renderList(users) }
+                    it.data?.let { teams -> renderList(teams) }
                     recyclerView.visibility = View.VISIBLE
                 }
                 Status.LOADING -> {

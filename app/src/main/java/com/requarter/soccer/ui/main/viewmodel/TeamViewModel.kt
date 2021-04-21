@@ -17,17 +17,17 @@ class TeamViewModel(private val mainRepository: MainRepository): ViewModel() {
     private val compositeDisposable = CompositeDisposable()
 
     init {
-        fetchUsers()
+        fetchTeams()
     }
 
-    private fun fetchUsers() {
+    private fun fetchTeams() {
         teams.postValue(Resource.loading(null))
         compositeDisposable.add(
             mainRepository.getTeams()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ userList ->
-                    teams.postValue(Resource.success(userList))
+                .subscribe({ teamList ->
+                    teams.postValue(Resource.success(teamList))
                 }, { throwable ->
                     teams.postValue(Resource.error("Something Went Wrong", null))
                 })
@@ -39,7 +39,7 @@ class TeamViewModel(private val mainRepository: MainRepository): ViewModel() {
         compositeDisposable.dispose()
     }
 
-    fun getUsers(): LiveData<Resource<List<Team>>> {
+    fun getTeams(): LiveData<Resource<List<Team>>> {
         return teams
     }
 

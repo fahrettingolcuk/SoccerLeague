@@ -1,5 +1,6 @@
 package com.requarter.soccer.ui.main.view
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -59,7 +60,7 @@ class NextFixtureFragment : Fragment() {
     }
 
     private fun setupObserver() {
-        teamViewModel.getUsers().observe(this, Observer {
+        teamViewModel.getTeams().observe(viewLifecycleOwner, Observer {
             when (it.status) {
                 Status.SUCCESS-> {
                     it.data?.let {  renderList() }

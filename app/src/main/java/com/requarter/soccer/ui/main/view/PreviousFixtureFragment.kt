@@ -60,7 +60,7 @@ class PreviousFixtureFragment : Fragment() {
     }
 
     private fun setupObserver() {
-        teamViewModel.getUsers().observe(this, Observer {
+        teamViewModel.getTeams().observe(viewLifecycleOwner, Observer {
             when (it.status) {
                 Status.SUCCESS-> {
                     it.data?.let {  renderList() }
