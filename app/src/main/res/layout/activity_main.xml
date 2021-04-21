@@ -28,6 +28,7 @@
         android:layout_marginBottom="32dp"
         android:contentDescription="+"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:srcCompat="@drawable/ic_baseline_filter_list_24"
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="MissingConstraints" />
     <Button
