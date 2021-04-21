@@ -1,9 +1,8 @@
-package com.requarter.soccer
+package com.requarter.soccer.ui.main.view
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -12,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.requarter.soccer.R
 import com.requarter.soccer.data.api.ApiHelper
 import com.requarter.soccer.data.api.ApiServiceImpl
 import com.requarter.soccer.data.model.Team
@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         setupViewModel()
         setupObserver()
         drawFixtureBtn.setOnClickListener {
-            val intent = Intent(this,FixtureActivity::class.java)
+            val intent = Intent(this, FixtureActivity::class.java)
             startActivity(intent)
         }
         btnChangeTheme.setOnClickListener {

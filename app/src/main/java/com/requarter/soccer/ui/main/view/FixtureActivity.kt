@@ -1,26 +1,12 @@
-package com.requarter.soccer
+package com.requarter.soccer.ui.main.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import com.requarter.soccer.data.api.ApiHelper
-import com.requarter.soccer.data.api.ApiServiceImpl
-import com.requarter.soccer.data.model.Team
-import com.requarter.soccer.ui.base.ViewModelFactory
-import com.requarter.soccer.ui.main.view.NextFixtureFragment
-import com.requarter.soccer.ui.main.view.PreviousFixtureFragment
-import com.requarter.soccer.ui.main.viewmodel.TeamViewModel
-import com.requarter.soccer.utils.Status
+import com.requarter.soccer.R
 import kotlinx.android.synthetic.main.activity_fixture.*
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.progressBar
 
 class FixtureActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
